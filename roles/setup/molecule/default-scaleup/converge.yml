@@ -1,0 +1,24 @@
+---
+- name: Converge - Gather facts
+  hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Gather Facts
+      ansible.builtin.setup:
+        gather_subset:
+          - min
+          - network
+      register: setup_result
+      until: setup_result.failed != true
+      retries: 10
+
+- name: Converge - Scale Up
+  hosts: scale_up_host
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Include K3s setup setup_agent.yml
+      include_role:
+        name: setup
+        tasks_from: setup_agent.yml
