@@ -1,0 +1,77 @@
+{
+  "id": "21afb100-01f9-4915-9c8c-bf9afc032c01",
+  "capabilityClass": "DeploymentCapability",
+  "name": "K3s",
+  "logo": "mdi-alpha-k-box-outline",
+  "type": [
+    "SETUP",
+    "DEPLOY",
+    "SCALE"
+  ],
+  "actions": {
+    "INSTALL": {
+      "actionClass": "AwxAction",
+      "actionType": "INSTALL",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "install.yml",
+      "connectionTypes": ["ssh"]
+    },
+    "UNINSTALL": {
+      "actionClass": "AwxAction",
+      "actionType": "UNINSTALL",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "uninstall.yml",
+      "connectionTypes": ["ssh"]
+    },
+    "SCALE_UP": {
+      "actionClass": "AwxAction",
+      "actionType": "SCALE_UP",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "scaleup.yml",
+      "connectionTypes": ["ssh"]
+    },
+    "SCALE_DOWN": {
+      "actionClass": "AwxAction",
+      "actionType": "SCALE_DOWN",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "scaledown.yml",
+      "connectionTypes": ["ssh"]
+    },
+    "DEPLOY": {
+      "actionClass": "AwxAction",
+      "actionType": "DEPLOY",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "deploy.yml",
+      "connectionTypes": ["ssh"]
+    },
+    "UNDEPLOY": {
+      "actionClass": "AwxAction",
+      "actionType": "UNDEPLOY",
+      "awxRepo": "https://github.com/eclipse-slm/slm-dc-k3s",
+      "awxBranch": "1.0.0",
+      "playbook": "undeploy.yml",
+      "connectionTypes": ["ssh"]
+    }
+  },
+  "supportedDeploymentTypes": [
+    "KUBERNETES"
+  ],
+  "clusterMemberTypes": [
+    {
+      "prettyName": "Server",
+      "name": "k3s_server",
+      "minNumber": 3,
+      "scalable": false
+    }, {
+      "prettyName": "Agent",
+      "name": "k3s_agent",
+      "minNumber": 1,
+      "scalable": true
+    }
+  ]
+}
