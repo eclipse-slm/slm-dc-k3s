@@ -39,5 +39,5 @@
   environment:
     K3S_URL: "https://{{ ip_first_server }}:6443"
     K3S_TOKEN: "{{ k3s_token }}"
-    INSTALL_K3S_EXEC: server
+    INSTALL_K3S_EXEC: "server {{ k3s_exec | default('') }}"
   until: output_install.rc == 0
