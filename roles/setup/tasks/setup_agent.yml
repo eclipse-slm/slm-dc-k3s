@@ -26,7 +26,7 @@
 
 - name: Check status of k3s folder in /var
   ansible.builtin.stat:
-    path: "{{ token_base_path }}"
+    path: "{{ token_base_path }}/agent"
   register: token_base_folder
 
 - name: Run install script
