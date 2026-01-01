@@ -29,8 +29,16 @@
           - python3-setuptools
           - python2-setuptools
 
-- name: Install pip-kubernetes
+- name: Install pip-kubernetes (not Ubuntu 24)
+  when: ansible_distribution != 'Ubuntu' and ansible_distribution_major_version != '24'
   ansible.builtin.pip:
     name:
       - kubernetes
     executable: pip3
+
+- name: Install pip-kubernetes (Ubuntu 24)
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version == '24'
+  ansible.builtin.apt:
+    update_cache: yes
+    pkg:
+      - python3-kubernetes
