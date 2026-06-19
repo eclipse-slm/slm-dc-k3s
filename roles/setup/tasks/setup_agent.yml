@@ -1,9 +1,9 @@
 ---
 - name: Create cgroup memory (Raspbian only)
   when:
-    - ansible_lsb.id is defined
-    - ansible_lsb.id == 'Raspbian'
-  include_tasks: helper/create_cgroup_memory.yml
+    - ansible_facts['lsb']['id'] is defined
+    - ansible_facts['lsb']['id'] | lower == 'raspbian'
+  ansible.builtin.include_tasks: helper/create_cgroup_memory.yml
 
 - name: Disable firewalld (CentOS only)
   when: ansible_distribution == 'CentOS'
@@ -12,7 +12,7 @@
     name: "firewalld"
 
 - name: Include tasks file for downloading install script
-  include_tasks: helper/download_install_script.yml
+  ansible.builtin.include_tasks: helper/download_install_script.yml
 
 - name: Lookup Cluster token
   ansible.builtin.slurp:
