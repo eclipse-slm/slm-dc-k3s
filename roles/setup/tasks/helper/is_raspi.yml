@@ -1,0 +1,20 @@
+---
+- name: Check if device tree model file exists
+  ansible.builtin.stat:
+    path: /sys/firmware/devicetree/base/model
+  register: dt_model_file
+
+- name: Read device tree model
+  ansible.builtin.slurp:
+    path: /sys/firmware/devicetree/base/model
+  register: dt_model_raw
+  when: dt_model_file.stat.exists
+
+- name: Set parsed model and Raspberry Pi flag
+  ansible.builtin.set_fact:
+    device_model: "{{ (dt_model_raw.content | b64decode | replace('\\u0000', '') | trim) if dt_model_file.stat.exists else 'unknown' }}"
+    is_raspberry_pi: "{{ dt_model_file.stat.exists and ('raspberry pi' in (dt_model_raw.content | b64decode | lower)) }}"
+
+- name: Print Raspberry Pi detection result
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }}: model='{{ device_model }}', is_raspberry_pi={{ is_raspberry_pi }}"

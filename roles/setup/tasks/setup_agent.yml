@@ -1,11 +1,12 @@
 ---
+- name: Check if device is Raspberry Pi
+  ansible.builtin.include_tasks: helper/is_raspi.yml
+
 - name: Lookup cgroup version
   ansible.builtin.include_tasks: helper/get_cgroup_version.yml
 
 - name: Create cgroup memory (Raspbian only)
-  when:
-    - ansible_facts['lsb']['id'] is defined
-    - ansible_facts['lsb']['id'] | lower == 'raspbian'
+  when: is_raspberry_pi
   ansible.builtin.include_tasks: helper/create_cgroup_memory.yml
 
 - name: Disable firewalld (CentOS only)
@@ -32,12 +33,12 @@
     path: "{{ token_base_path }}/agent"
   register: token_base_folder
 
-- name: Set K3s version (Raspbian)
-  when:
-    - ansible_facts['lsb']['id'] is defined
-    - ansible_facts['lsb']['id'] | lower == 'raspbian'
-  ansible.builtin.set_fact:
-    k3s_version: "v1.34.7+k3s1"
+# - name: Set K3s version (Raspbian)
+#   when:
+#     - ansible_facts['lsb']['id'] is defined
+#     - ansible_facts['lsb']['id'] | lower == 'raspbian'
+#   ansible.builtin.set_fact:
+#     k3s_version: "v1.34.7+k3s1"
 
 - name: Set K3s version (cgroup v1)
   when:
