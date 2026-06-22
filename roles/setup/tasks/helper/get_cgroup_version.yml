@@ -1,0 +1,13 @@
+---
+- name: Check for cgroup v2 controllers file
+  ansible.builtin.stat:
+    path: /sys/fs/cgroup/cgroup.controllers
+  register: cgroup_v2_controllers
+
+- name: Set detected cgroup version
+  ansible.builtin.set_fact:
+    cgroup_version: "{{ 'v2' if cgroup_v2_controllers.stat.exists else 'v1' }}"
+
+- name: Print detected cgroup version
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} uses cgroup {{ cgroup_version }}"

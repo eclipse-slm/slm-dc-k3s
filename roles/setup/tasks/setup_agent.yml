@@ -1,4 +1,7 @@
 ---
+- name: Lookup cgroup version
+  ansible.builtin.include_tasks: helper/get_cgroup_version.yml
+
 - name: Create cgroup memory (Raspbian only)
   when:
     - ansible_facts['lsb']['id'] is defined
@@ -33,6 +36,13 @@
   when:
     - ansible_facts['lsb']['id'] is defined
     - ansible_facts['lsb']['id'] | lower == 'raspbian'
+  ansible.builtin.set_fact:
+    k3s_version: "v1.34.7+k3s1"
+
+- name: Set K3s version (cgroup v1)
+  when:
+    - cgroup_version is defined
+    - cgroup_version == 'v1'
   ansible.builtin.set_fact:
     k3s_version: "v1.34.7+k3s1"
 
